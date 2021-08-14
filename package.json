@@ -7,10 +7,11 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "nodemon -r dotenv/config index.js"
   },
   "dependencies": {
     "@notionhq/client": "^0.2.4",
+    "dotenv": "^10.0.0",
     "googleapis": "^84.0.0",
     "node-telegram-bot-api": "^0.54.0"
   }
