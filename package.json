@@ -1,0 +1,17 @@
+{
+  "name": "doc-save-bot",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:Arden488/doc-save-bot.git",
+  "author": "Anton Samoilov <absamoilov88@gmail.com>",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "dependencies": {
+    "@notionhq/client": "^0.2.4",
+    "googleapis": "^84.0.0",
+    "node-telegram-bot-api": "^0.54.0"
+  }
+}
