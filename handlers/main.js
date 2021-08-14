@@ -3,18 +3,20 @@ import handleSaveLast from "./saveLast.js";
 import handleSavePrompt from "./savePrompt.js";
 import handleSaveReply from "./saveReply.js";
 
-function handleScenario(message) {
+function handleScenario(message, bot) {
   const status = getData("status");
+
+  console.log("handleScenario", status);
 
   switch (status) {
     case "SAVE_REPLY":
-      handleSaveReply(message);
+      handleSaveReply(message, bot);
       break;
     case "SAVE_PROMPT":
-      handleSavePrompt(message);
+      handleSavePrompt(message, bot);
       break;
     case "SAVE_LAST":
-      handleSaveLast(message);
+      handleSaveLast(message, bot);
       break;
   }
 }
