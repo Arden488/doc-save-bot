@@ -1,9 +1,10 @@
 const data = {
-  lastFileOrLink: null,
+  lastMessage: null,
   currentUserID: null,
   status: null,
-  stage: 0,
-  savedData: {},
+  step: 0,
+  description: null,
+  link: null,
 };
 
 function getData(name) {
@@ -11,7 +12,7 @@ function getData(name) {
 }
 
 function setData(name, value) {
-  if (!data.hasOwnProperty(name) || !value) return false;
+  if (!data.hasOwnProperty(name) || value === "undefined") return false;
 
   data[name] = value;
   return true;
