@@ -1,1 +1,3 @@
-export default function handleError(error) {}
+export default function handleError(error) {
+  console.log(error);
+}
