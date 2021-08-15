@@ -46,10 +46,6 @@ async function setFileOrLink(message) {
 
   setData("link", link);
 
-  bot.sendMessage(
-    message.chat.id,
-    "Спасибо, все ушло в базу👌🏻 Да прибудет с тобой понятность"
-  );
   return true;
 }
 
@@ -65,7 +61,7 @@ async function handleSavePrompt(message) {
     case 2:
       await setFileOrLink(message);
       if (isAllDataSet()) {
-        handleSend();
+        handleSend(message.chat.id);
       }
       break;
   }

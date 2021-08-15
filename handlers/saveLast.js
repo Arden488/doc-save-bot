@@ -26,9 +26,12 @@ async function setFileOrLink(message) {
     link = message.text;
   }
 
-  setData("link", link);
+  if (link) {
+    setData("link", link);
+    return true;
+  }
 
-  return true;
+  return false;
 }
 
 function setDescription(message) {
@@ -41,11 +44,6 @@ function setDescription(message) {
   }
 
   setData("description", message.text);
-
-  bot.sendMessage(
-    message.chat.id,
-    "Спасибо, все ушло в базу👌🏻 Да прибудет с тобой понятность"
-  );
 }
 
 async function handleSaveLast(message) {
@@ -70,7 +68,7 @@ async function handleSaveLast(message) {
     case 1:
       setDescription(message);
       if (isAllDataSet()) {
-        handleSend();
+        handleSend(message.chat.id);
       }
       break;
     case 2:

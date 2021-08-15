@@ -41,11 +41,6 @@ function setDescription(message) {
   }
 
   setData("description", message.text);
-
-  bot.sendMessage(
-    message.chat.id,
-    "Спасибо, все ушло в базу👌🏻 Да прибудет с тобой понятность"
-  );
 }
 
 async function handleSaveReply(message) {
@@ -61,7 +56,7 @@ async function handleSaveReply(message) {
     case 1:
       setDescription(message);
       if (isAllDataSet()) {
-        handleSend();
+        handleSend(message.chat.id);
       }
       break;
     case 2:
