@@ -1,22 +1,17 @@
-import { getData, setData } from "../services/appData.js";
+import { bot } from "../utils/bot.js";
+import { getData, isAllDataSet, setData } from "../services/appData.js";
 import { getMessageType } from "../utils/message.js";
 import { processFile } from "./file.js";
 import { handleSend } from "./send.js";
 
-let step = 0;
-
-function start(message, bot) {
-  console.log("start 1");
+function start(message) {
+  // TODO: check if another status is in progress
   setData("status", "SAVE_PROMPT");
-  console.log("start 2");
-  console.log(bot, message.chat.id);
   bot.sendMessage(message.chat.id, "Опиши, что добавляешь");
-  console.log("start 3");
   setData("step", 1);
 }
 
-function setDescription(message, bot) {
-  console.log("setDescription 0");
+function setDescription(message) {
   if (!message.text) {
     bot.sendMessage(
       message.chat.id,
@@ -25,27 +20,22 @@ function setDescription(message, bot) {
     return;
   }
 
-  console.log("setDescription 1");
   setData("description", message.text);
-  console.log("setDescription 2");
-  console.log(bot, message);
   bot.sendMessage(
     message.chat.id,
     "Ок, теперь вставь ссылку или прикрепи файл"
   );
-  console.log("setDescription 3");
+
   setData("step", 2);
 }
 
-async function setFileOrLink(message, bot) {
+async function setFileOrLink(message) {
   const messageType = getMessageType(message);
   let link = null;
 
-  console.log(messageType);
-
   if (messageType !== "file" && messageType !== "link") {
     bot.sendMessage(message.chat.id, "Мне нужен файл или ссылка");
-    return;
+    return false;
   }
 
   if (messageType === "file") {
@@ -60,25 +50,25 @@ async function setFileOrLink(message, bot) {
     message.chat.id,
     "Спасибо, все ушло в базу👌🏻 Да прибудет с тобой понятность"
   );
+  return true;
 }
 
-function handleSavePrompt(message, bot) {
+async function handleSavePrompt(message) {
   const step = getData("step");
-  console.log(step);
   switch (step) {
     case 0:
-      start(message, bot);
+      start(message);
       break;
     case 1:
-      setDescription(message, bot);
+      setDescription(message);
       break;
     case 2:
-      setFileOrLink(message, bot);
-      handleSend();
+      await setFileOrLink(message);
+      if (isAllDataSet()) {
+        handleSend();
+      }
       break;
   }
-
-  console.log("handleSavePrompt");
 }
 
 export default handleSavePrompt;
