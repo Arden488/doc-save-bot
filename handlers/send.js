@@ -5,8 +5,9 @@ import { saveToNotion } from "../services/notion.js";
 function handleSend(chatId) {
   const description = getData("description");
   const link = getData("link");
+  const user = getData("user");
 
-  if (saveToNotion({ description, link })) {
+  if (saveToNotion({ description, link, user })) {
     bot.sendMessage(
       chatId,
       "Спасибо, все ушло в базу👌🏻 Да прибудет с тобой понятность"
