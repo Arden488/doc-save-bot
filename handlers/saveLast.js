@@ -49,6 +49,7 @@ function setDescription(message) {
 async function handleSaveLast(message) {
   const lastMessage = getData("lastMessage");
   const step = getData("step");
+  setData("user", [message.from.first_name, message.from.last_name].join(" "));
 
   if (!lastMessage) {
     bot.sendMessage(

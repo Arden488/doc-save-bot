@@ -1,6 +1,6 @@
 const data = {
   lastMessage: null,
-  currentUserID: null,
+  user: null,
   status: null,
   step: 0,
   description: null,

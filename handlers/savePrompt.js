@@ -50,7 +50,9 @@ async function setFileOrLink(message) {
 }
 
 async function handleSavePrompt(message) {
+  setData("user", [message.from.first_name, message.from.last_name].join(" "));
   const step = getData("step");
+
   switch (step) {
     case 0:
       start(message);

@@ -45,6 +45,7 @@ function setDescription(message) {
 
 async function handleSaveReply(message) {
   const step = getData("step");
+  setData("user", [message.from.first_name, message.from.last_name].join(" "));
 
   switch (step) {
     case 0:
