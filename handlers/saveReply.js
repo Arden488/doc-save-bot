@@ -1,8 +1,14 @@
 import { bot } from "../utils/bot.js";
-import { getData, isAllDataSet, setData } from "../services/appData.js";
+import {
+  getAllData,
+  getData,
+  isAllDataSet,
+  setData,
+} from "../services/appData.js";
 import { getMessageType } from "../utils/message.js";
 import { processFile } from "./file.js";
 import { handleSend } from "./send.js";
+import { logger } from "../services/log.js";
 
 function start(message) {
   // TODO: check if another status is in progress
@@ -20,6 +26,7 @@ async function setFileOrLink(message) {
     return false;
   }
 
+  // TODO: DRY
   if (messageType === "file") {
     bot.sendMessage(message.chat.id, "Пробую загрузить файл...");
     link = await processFile(message.document);
@@ -51,6 +58,8 @@ async function handleSaveReply(message) {
   const step = getData("step");
   setData("user", [message.from.first_name, message.from.last_name].join(" "));
 
+  logger.log("info", "Save Reply handler", { data: message, step });
+
   switch (step) {
     case 0:
       const isLinkSet = await setFileOrLink(message);
@@ -61,6 +70,7 @@ async function handleSaveReply(message) {
     case 1:
       setDescription(message);
       if (isAllDataSet()) {
+        logger.log("info", "Saving data", { message, appData: getAllData() });
         handleSend(message.chat.id);
       }
       break;

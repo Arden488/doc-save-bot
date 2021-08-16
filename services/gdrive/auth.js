@@ -1,9 +1,10 @@
+import { logger } from "../log.js";
 import { authorize } from "./index.js";
 
 const auth = await authorize();
 
 if (auth) {
-  console.log("Successfully authorized");
+  logger.log("info", "Successfully authorized");
 } else {
-  console.log("Something went wrong...");
+  logger.log("info", "Something went wrong");
 }

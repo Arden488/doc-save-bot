@@ -1,4 +1,5 @@
 import { authorize, saveFileToDrive } from "../services/gdrive/index.js";
+import { logger } from "../services/log.js";
 import { bot } from "../utils/bot.js";
 
 async function processFile(document) {
@@ -10,6 +11,8 @@ async function processFile(document) {
     const filePersistentLink = await saveFileToDrive(fileTmpLink);
     return filePersistentLink.webContentLink;
   }
+
+  logger.log("error", "File is not saved to GDrive", { auth, document });
 
   return false;
 }

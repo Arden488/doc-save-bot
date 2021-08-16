@@ -1,3 +1,3 @@
 export default function handleError(error) {
-  console.log(error);
+  logger.log("error", "Error happened", { error });
 }

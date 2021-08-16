@@ -1,4 +1,5 @@
 import { Client } from "@notionhq/client";
+import { logger } from "./log.js";
 
 const notion = new Client({
   auth: process.env.NOTION_TOKEN,
@@ -38,9 +39,9 @@ async function saveToNotion(data) {
         },
       },
     });
-    console.log("Success! Entry added.");
+    logger.log("error", "Entry successfully added to the notion", { data });
   } catch (error) {
-    console.error(error.body);
+    logger.log("error", "Failed to add an entry to the notion", { error });
   }
 }
 

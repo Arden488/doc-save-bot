@@ -7,6 +7,10 @@ const data = {
   link: null,
 };
 
+function getAllData() {
+  return data;
+}
+
 function isAllDataSet() {
   return getData("description") !== null && getData("link") !== "null";
 }
@@ -29,4 +33,4 @@ function setData(name, value) {
   return true;
 }
 
-export { getData, setData, resetData, isAllDataSet };
+export { getData, setData, resetData, isAllDataSet, getAllData };

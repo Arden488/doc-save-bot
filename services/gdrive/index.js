@@ -4,6 +4,7 @@ import readline from "readline";
 import { google } from "googleapis";
 import util from "util";
 import got from "got";
+import { logger } from "../log.js";
 
 const __dirname = path.resolve();
 const TOKEN_PATH = "token.json";
@@ -12,6 +13,7 @@ const SCOPES = ["https://www.googleapis.com/auth/drive"];
 let oAuth2Client = null;
 
 async function saveFileToDrive(fileUrl) {
+  logger.log("info", "Uploading file to drive", { fileUrl });
   const fileId = await addRemoteFile(fileUrl);
   return fileId;
 }
@@ -21,9 +23,12 @@ async function saveFileToDrive(fileUrl) {
  * given callback function.
  */
 async function authorize() {
+  logger.log("info", "Google auth is requested");
   const credentialsFileRead = await fs
     .readFile("credentials.json")
-    .catch((err) => console.error("Failed to read credentials file", err));
+    .catch((error) =>
+      logger.log("oror", "Failed to read credentials file", { error })
+    );
   const credentials = JSON.parse(credentialsFileRead.toString());
 
   const { client_secret, client_id, redirect_uris } = credentials.web;
@@ -34,15 +39,18 @@ async function authorize() {
   );
 
   // Check if we have previously stored a token.
-  const tokenFileRead = await fs.readFile(TOKEN_PATH).catch(async (err) => {
-    console.log("No saved token");
-  });
+  const tokenFileRead = await fs
+    .readFile(TOKEN_PATH)
+    .catch(async (error) =>
+      logger.log("info", "No saved google token", { error })
+    );
 
   if (tokenFileRead) {
     const token = JSON.parse(tokenFileRead.toString());
     // const token = tokenRead.res.data;
     await oAuth2Client.setCredentials(token);
   } else {
+    logger.log("info", "Trying to get new token");
     await getAccessToken();
   }
 
@@ -74,15 +82,17 @@ async function getAccessToken() {
   try {
     rl.close();
     return await processCodeasync(answer);
-  } catch (err) {
-    console.error("Incorrect token creation", err);
+  } catch (error) {
+    logger.log("error", "Incorrect token creation", { error });
   }
 }
 
 async function processCodeasync(code) {
   const tokenRead = await oAuth2Client
     .getToken(code)
-    .catch((err) => console.error("Error retrieving access token", err));
+    .catch((error) =>
+      logger.log("error", "Error retrieving access token", { error })
+    );
 
   // const token = JSON.parse(tokenRead.toString());
   const token = tokenRead.res.data;
@@ -90,8 +100,11 @@ async function processCodeasync(code) {
 
   const tokenFileWrite = await fs
     .writeFile(TOKEN_PATH, JSON.stringify(token))
-    .catch((err) => console.error(err));
-  if (tokenFileWrite) console.log("Token stored to", TOKEN_PATH);
+    .catch((error) =>
+      logger.log("error", "Error writing access token", { error })
+    );
+  if (tokenFileWrite)
+    logger.log("info", "Token stored to", { path: TOKEN_PATH });
 
   return true;
 }
@@ -106,8 +119,6 @@ async function addRemoteFile(fileUrl) {
     parents: [folderId],
   };
   var media = {
-    // mimeType:
-    //   "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
     body: got.stream(fileUrl),
   };
   const file = await drive.files.create({
@@ -137,7 +148,7 @@ async function generatePublicUrl(drive, fileId) {
     });
     return result.data;
   } catch (error) {
-    console.log(error.message);
+    logger.log("error", "Error getting public url", { error });
   }
 }
 

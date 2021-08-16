@@ -7,7 +7,7 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "start": "node -r dotenv/config index.js",
+    "start": "NODE_ENV=production node -r dotenv/config index.js",
     "dev": "nodemon -r dotenv/config index.js",
     "google-auth": "node services/gdrive/auth.js"
   },
@@ -16,7 +16,8 @@
     "dotenv": "^10.0.0",
     "googleapis": "^84.0.0",
     "got": "^11.8.2",
-    "node-telegram-bot-api": "^0.54.0"
+    "node-telegram-bot-api": "^0.54.0",
+    "winston": "^3.3.3"
   },
   "devDependencies": {
     "nodemon": "^2.0.12"
