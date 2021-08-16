@@ -21,7 +21,11 @@ async function setFileOrLink(message) {
   }
 
   if (messageType === "file") {
+    bot.sendMessage(message.chat.id, "Пробую загрузить файл...");
     link = await processFile(message.document);
+    if (link) {
+      bot.sendMessage(message.chat.id, "Файл загрузил!");
+    }
   } else if (messageType === "link") {
     link = message.text;
   }
