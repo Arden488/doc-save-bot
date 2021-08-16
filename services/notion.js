@@ -25,6 +25,17 @@ async function saveToNotion(data) {
         Link: {
           url: data.link,
         },
+        User: {
+          type: "rich_text",
+          rich_text: [
+            {
+              type: "text",
+              text: {
+                content: data.user,
+              },
+            },
+          ],
+        },
       },
       //   children: [
       //     {
