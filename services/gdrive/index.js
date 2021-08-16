@@ -6,40 +6,26 @@ import util from "util";
 import got from "got";
 
 const __dirname = path.resolve();
-const TOKEN_PATH = path.join(__dirname, "services", "gdrive") + "/token.json";
+const TOKEN_PATH = "token.json";
 const SCOPES = ["https://www.googleapis.com/auth/drive"];
 
 let oAuth2Client = null;
 
 async function saveFileToDrive(fileUrl) {
-  // If modifying these scopes, delete token.json.
-  // The file token.json stores the user's access and refresh tokens, and is
-  // created automatically when the authorization flow completes for the first
-  // time.
-
-  // Load client secrets from a local file.
-  const credentialsFileRead = await fs
-    .readFile(path.join(__dirname, "services", "gdrive") + "/credentials.json")
-    .catch((err) => console.error("Failed to read credentials file", err));
-  const credentials = JSON.parse(credentialsFileRead.toString());
-  await authorize(credentials);
-
   const fileId = await addRemoteFile(fileUrl);
   return fileId;
-  // (err, content) => {
-  //   if (err) return console.log("Error loading client secret file:", err);
-  //   // Authorize a client with credentials, then call the Google Drive API.
-  //   authorize(JSON.parse(content), (auth) => addRemoteFile(auth, fileUrl));
-  // };
 }
 
 /**
  * Create an OAuth2 client with the given credentials, and then execute the
  * given callback function.
- * @param {Object} credentials The authorization client credentials.
- * @param {function} callback The callback to call with the authorized client.
  */
-async function authorize(credentials, callback) {
+async function authorize() {
+  const credentialsFileRead = await fs
+    .readFile("credentials.json")
+    .catch((err) => console.error("Failed to read credentials file", err));
+  const credentials = JSON.parse(credentialsFileRead.toString());
+
   const { client_secret, client_id, redirect_uris } = credentials.web;
   oAuth2Client = new google.auth.OAuth2(
     client_id,
@@ -56,11 +42,11 @@ async function authorize(credentials, callback) {
     const token = JSON.parse(tokenFileRead.toString());
     // const token = tokenRead.res.data;
     await oAuth2Client.setCredentials(token);
-    return;
   } else {
     await getAccessToken();
-    return;
   }
+
+  return oAuth2Client !== null;
 }
 
 /**
@@ -112,10 +98,8 @@ async function processCodeasync(code) {
 
 async function addRemoteFile(fileUrl) {
   const drive = google.drive({ version: "v3", auth: oAuth2Client });
-  // const fileUrl =
-  //   "https://api.telegram.org/file/bot1897674501:AAFb19ULt0NrHVnaN_Wqi3YseAWgyBaSGOk/documents/file_1.docx";
-  //   console.log(request(fileUrl).pipe(fs.createWriteStream("file_1.docx")));
-  var folderId = "18dajzacJlBaVxyRxfr4xDjfUJsr5PH3l";
+
+  var folderId = process.env.GDRIVE_UPLOAD_FOLDER;
   var filename = fileUrl.substring(fileUrl.lastIndexOf("/") + 1);
   var fileMetadata = {
     name: filename,
@@ -157,4 +141,4 @@ async function generatePublicUrl(drive, fileId) {
   }
 }
 
-export { saveFileToDrive };
+export { saveFileToDrive, authorize };

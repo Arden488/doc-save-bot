@@ -37,22 +37,6 @@ async function saveToNotion(data) {
           ],
         },
       },
-      //   children: [
-      //     {
-      //       object: "block",
-      //       type: "paragraph",
-      //       paragraph: {
-      //         text: [
-      //           {
-      //             type: "text",
-      //             text: {
-      //               content: JSON.stringify(savedData.link),
-      //             },
-      //           },
-      //         ],
-      //       },
-      //     },
-      //   ],
     });
     console.log("Success! Entry added.");
   } catch (error) {
