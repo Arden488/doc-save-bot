@@ -12,9 +12,9 @@ const SCOPES = ["https://www.googleapis.com/auth/drive"];
 
 let oAuth2Client = null;
 
-async function saveFileToDrive(fileUrl) {
-  logger.log("info", "Uploading file to drive", { fileUrl });
-  const fileId = await addRemoteFile(fileUrl);
+async function saveFileToDrive(data) {
+  logger.log("info", "Uploading file to drive", { data });
+  const fileId = await addRemoteFile(data);
   return fileId;
 }
 
@@ -108,24 +108,24 @@ async function processCodeasync(code) {
   return true;
 }
 
-async function addRemoteFile(fileUrl) {
+async function addRemoteFile({ file, link }) {
   const drive = google.drive({ version: "v3", auth: oAuth2Client });
 
   var folderId = process.env.GDRIVE_UPLOAD_FOLDER;
-  var filename = fileUrl.substring(fileUrl.lastIndexOf("/") + 1);
+  // var filename = link.substring(link.lastIndexOf("/") + 1);
   var fileMetadata = {
-    name: filename,
+    name: file.file_name,
     parents: [folderId],
   };
   var media = {
-    body: got.stream(fileUrl),
+    body: got.stream(link),
   };
-  const file = await drive.files.create({
+  const uploaded = await drive.files.create({
     resource: fileMetadata,
     media: media,
     fields: "id",
   });
-  return generatePublicUrl(drive, file.data.id);
+  return generatePublicUrl(drive, uploaded.data.id);
 }
 
 //create a public url

@@ -8,8 +8,11 @@ async function processFile(document) {
   const auth = await authorize();
 
   if (auth) {
-    const filePersistentLink = await saveFileToDrive(fileTmpLink);
-    return filePersistentLink.webContentLink;
+    const filePersistentLink = await saveFileToDrive({
+      file: document,
+      link: fileTmpLink,
+    });
+    return filePersistentLink.webViewLink;
   }
 
   logger.log("error", "File is not saved to GDrive", { auth, document });
