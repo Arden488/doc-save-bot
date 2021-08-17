@@ -39,7 +39,7 @@ async function saveToNotion(data) {
         },
       },
     });
-    logger.log("error", "Entry successfully added to the notion", { data });
+    logger.log("info", "Entry successfully added to the notion", { data });
   } catch (error) {
     logger.log("error", "Failed to add an entry to the notion", { error });
   }
