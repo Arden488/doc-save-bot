@@ -39,11 +39,10 @@ async function authorize() {
   );
 
   // Check if we have previously stored a token.
-  const tokenFileRead = await fs
-    .readFile(TOKEN_PATH)
-    .catch(async (error) =>
-      logger.log("info", "No saved google token", { error })
-    );
+  const tokenFileRead = await fs.readFile(TOKEN_PATH).catch(async (error) => {
+    logger.log("info", "No saved google token", { error });
+    return false;
+  });
 
   if (tokenFileRead) {
     const token = JSON.parse(tokenFileRead.toString());
