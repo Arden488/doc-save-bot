@@ -6,7 +6,7 @@ const config = { polling: process.env.NODE_ENV !== "production" };
 const bot = new TelegramBot(token, config);
 
 if (process.env.NODE_ENV === "production") {
-  bot.setWebHook("dev.samoilov.tech", {
+  bot.setWebHook(process.env.PUBLIC_URL, {
     certificate: "../crt.pem", // Path to your crt.pem
   });
 }
