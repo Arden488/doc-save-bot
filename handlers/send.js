@@ -1,4 +1,4 @@
-import { bot } from "../utils/bot.js";
+import bot from "../bot.js";
 import { getData, resetData } from "../services/appData.js";
 import { saveToNotion } from "../services/notion.js";
 
