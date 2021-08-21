@@ -27,7 +27,7 @@ async function authorize() {
   const credentialsFileRead = await fs
     .readFile("credentials.json")
     .catch((error) =>
-      logger.log("oror", "Failed to read credentials file", { error })
+      logger.log("error", "Failed to read credentials file", { error })
     );
   const credentials = JSON.parse(credentialsFileRead.toString());
 
