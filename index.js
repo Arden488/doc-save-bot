@@ -9,6 +9,7 @@ import handleSaveReply from "./handlers/saveReply.js";
 import { handleScenario } from "./handlers/main.js";
 import { getData, setData } from "./services/appData.js";
 
+bot.on("webhook_error", handleError);
 bot.on("polling_error", handleError);
 bot.onText(/\/cancel/, handleCancel);
 bot.onText(/\/save_last/, handleSaveLast);

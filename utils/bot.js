@@ -1,8 +1,15 @@
 import TelegramBot from "node-telegram-bot-api";
 
 const token = process.env.TELEGRAM_TOKEN;
+const config = { polling: process.env.NODE_ENV !== "production" };
 
-const bot = new TelegramBot(token, { polling: true });
+const bot = new TelegramBot(token, config);
+
+if (process.env.NODE_ENV === "production") {
+  bot.setWebHook("dev.samoilov.tech", {
+    certificate: "../crt.pem", // Path to your crt.pem
+  });
+}
 
 function isCommand(message) {
   return (
