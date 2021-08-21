@@ -33,7 +33,7 @@ function handleScenario(message) {
     case "SAVE_REPLY":
       handleSaveReply(message);
       break;
-    case "SAVE_PROMPT":
+    case "SAVE_ASK":
       handleSavePrompt(message);
       break;
     case "SAVE_LAST":

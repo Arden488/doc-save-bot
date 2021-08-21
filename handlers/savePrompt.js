@@ -12,7 +12,7 @@ import { logger } from "../services/log.js";
 
 function start(message) {
   // TODO: check if another status is in progress
-  setData("status", "SAVE_PROMPT");
+  setData("status", "SAVE_ASK");
   bot.sendMessage(message.chat.id, "Опиши, что добавляешь");
   setData("step", 1);
 }

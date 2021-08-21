@@ -11,7 +11,7 @@ bot.on("webhook_error", handleError);
 bot.on("polling_error", handleError);
 bot.onText(/\/cancel/, handleCancel);
 bot.onText(/\/save_last/, handleSaveLast);
-bot.onText(/\/save_prompt/, handleSavePrompt);
+bot.onText(/\/save_ask/, handleSavePrompt);
 bot.on("message", handleMain);
 
 serverStart(bot);
