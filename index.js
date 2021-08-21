@@ -1,5 +1,5 @@
-import { serverStart } from "./server";
-import bot from "./bot";
+import { serverStart } from "./server.js";
+import bot from "./bot.js";
 
 import handleCancel from "./handlers/cancel.js";
 import handleError from "./handlers/error.js";

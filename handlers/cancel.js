@@ -1,4 +1,4 @@
-import { bot } from "../bot.js";
+import bot from "../bot.js";
 import { resetData } from "../services/appData.js";
 
 export default function handleCancel(message) {
